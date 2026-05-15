@@ -1,14 +1,17 @@
+const fs = require('fs')
+const path = require('path')
 const multer = require('multer')
 
 exports.upload = multer({
     storage: multer.diskStorage({
         destination: (req, file, cb)=>{
-            cb(null, './assets')
+            const uploadPath = './assets'
+            fs.mkdirSync(uploadPath, { recursive: true })
+            cb(null, uploadPath)
         },
         filename: function (req, file, cb) {
-           // const uniqueSuffix = 'oshio'
-            // console.log(file)
-            cb(null, file.filename + '.' + file.mimetype.split("/")[1])
+            const extension = path.extname(file.originalname) || `.${file.mimetype.split('/')[1]}`
+            cb(null, `${file.fieldname}-${Date.now()}${extension}`)
         }
     }),
     limits: {
