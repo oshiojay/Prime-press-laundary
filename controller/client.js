@@ -1,6 +1,6 @@
 const clientModel = require('../model/client')
 const cloudinary = require('../middleware/cloudinary')
-const {emailTemplate} = require('../email')
+const { emailTemplate} = require('../email')
 const {brevo} = require('../utils/brevo')
 const bcrypt = require('bcrypt')
 const otpGenerator = require('otp-generator')
@@ -20,7 +20,7 @@ exports.createClient = async (req, res) => {
             fullName,
             email: email.toLowerCase(),
             password: hashedPassword,
-            otp
+            otp: otp
         })
 
         brevo(newClient.email, newClient.fullName, emailTemplate(newClient.fullName, newClient.otp))
@@ -30,9 +30,8 @@ exports.createClient = async (req, res) => {
             data: newClient
         })
     } catch (error) {
-        console.log(error.message)
         res.status(500).json({
-            message: "Something went wrong"
+            message: `"Something went wrong", ${error.message}`
         })
     }
 }
