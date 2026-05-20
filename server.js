@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const PORT = process.env.PORT
 
 
-const router = require('./route/client')
+const router = require('./route/admin')
 
 const app = express()
 app.use(express.json())
