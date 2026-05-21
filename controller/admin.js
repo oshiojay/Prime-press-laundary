@@ -1,5 +1,5 @@
 const clientModel = require('../model/admin')
-const { emailTemplate} = require('../email')
+const { emailTemplate, resetPasswordTemplate, resetPasswordSuccessfulTemplate } = require('../email')
 const {brevo} = require('../utils/brevo')
 const bcrypt = require('bcrypt')
 const otpGenerator = require('otp-generator')
@@ -161,7 +161,7 @@ exports.forgotPassword = async (req,res) =>{
             otp: OTP
         }
         console.log(OTP)
-        await brevo(user.email, user.fullName, emailTemplate(emailData.fullName, emailData.otp))
+        await brevo(user.email, user.fullName, resetPasswordTemplate(emailData.fullName, emailData.otp))
          
         user.otp = OTP;
         user.otpExpire = expiresAt;
@@ -211,7 +211,7 @@ exports.resetPassword = async (req,res) => {
         
         await user.save()
 
-        await brevo(user.email, user.fullName, resetPasswordTemplate(user.fullName))
+        await brevo(user.email, user.fullName, resetPasswordSuccessfulTemplate(user.fullName))
 
         res.status(200).json({
             message: "Password reset successfully"
