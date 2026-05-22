@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const PORT = process.env.PORT
 const swaggerUi = require('swagger-ui-express')
 const swagger = require('./swagger')
+const cors = require('cors')
 
 
 const router = require('./route/admin')
@@ -11,6 +12,7 @@ const bookingRouter = require('./route/booking')
 
 const app = express()
 app.use(express.json())
+app.use(cors())
 
 app.use('/apisDocs', swaggerUi.serve, swaggerUi.setup(swagger))
 

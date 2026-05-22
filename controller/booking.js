@@ -42,10 +42,10 @@ exports.getAllBookings = async (req, res) => {
 
 exports.getOneBooking = async (req, res) => {
     try {
-        const oneGroup = await groupModel.findOne()
+        const oneBooking = await bookingModel.findOne()
         res.status(200).json({
-            message: "one group retrieved successfully",
-            data: oneGroup
+            message: "one booking retrieved successfully",
+            data: oneBooking
         })
     } catch (error) {
         console.log(error.message)
