@@ -1,8 +1,7 @@
 const Joi = require('joi')
 
-const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+exports.createBookingValidator = (req, res, next) => {
 
-exports.createAdminValidator = (req, res, next) => {
     const schema = Joi.object({
         fullName: Joi.string().trim().min(2).required().messages({
             'string.base': 'Full name must be a string',
@@ -10,114 +9,69 @@ exports.createAdminValidator = (req, res, next) => {
             'string.min': 'Full name must be at least 2 characters long',
             'any.required': 'Full name is required'
         }),
-        email: Joi.string().trim().email().required().messages({
-            'string.email': 'Please enter a valid email',
-            'string.empty': 'Email is required',
-            'any.required': 'Email is required'
+
+        phoneNumber: Joi.string().trim().min(11).max(15).required().messages({
+            'string.base': 'Phone number must be a string',
+            'string.empty': 'Phone number is required',
+            'string.min': 'Phone number must be at least 11 characters',
+            'string.max': 'Phone number cannot be more than 15 characters',
+            'any.required': 'Phone number is required'
         }),
-        password: Joi.string().pattern(/^(?=.*[a-z])(?=.*[A-Z]).{8,}$/).required().messages({
-            'any.required': 'Password is required',
-            'string.empty': 'Password cannot be empty',
-            'string.pattern.base': 'Password must be at least 8 characters and include upper and lower case'
+
+        address: Joi.string().trim().required().messages({
+            'string.base': 'Address must be a string',
+            'string.empty': 'Address is required',
+            'any.required': 'Address is required'
+        }),
+
+        instruction: Joi.string().trim().required().messages({
+            'string.base': 'Instruction must be a string',
+            'string.empty': 'Instruction is required',
+            'any.required': 'Instruction is required'
+        }),
+
+        dateAndTime: Joi.date().required().messages({
+            'date.base': 'Date and time must be valid',
+            'any.required': 'Date and time is required'
         })
     })
 
     const { error } = schema.validate(req.body)
+
     if (error) {
         return res.status(400).json({
             message: error.details[0].message
         })
     }
+
     next()
 }
 
-exports.verifyAdminValidator = (req, res, next) => {
+exports.getOneBookingValidator = (req, res, next) => {
+
     const schema = Joi.object({
-        email: Joi.string().trim().email().required().messages({
-            'string.email': 'Please enter a valid email',
-            'string.empty': 'Email is required',
-            'any.required': 'Email is required'
-        }),
-        otp: Joi.string().trim().length(6).required().messages({
-            'string.empty': 'OTP is required',
-            'string.length': 'OTP must be 6 characters long',
-            'any.required': 'OTP is required'
+        id: Joi.string().hex().length(24).required().messages({
+            'string.empty': 'Booking id is required',
+            'string.length': 'Invalid booking id',
+            'string.hex': 'Invalid booking id',
+            'any.required': 'Booking id is required'
         })
     })
 
-    const { error } = schema.validate(req.body)
+    const { error } = schema.validate(req.params)
+
     if (error) {
         return res.status(400).json({
             message: error.details[0].message
         })
     }
+
     next()
 }
 
-exports.loginClientValidator = (req, res, next) => {
-    const schema = Joi.object({
-        email: Joi.string().trim().email().required().messages({
-            'string.email': 'Please enter a valid email',
-            'string.empty': 'Email is required',
-            'any.required': 'Email is required'
-        }),
-        password: Joi.string().required().messages({
-            'string.empty': 'Password is required',
-            'any.required': 'Password is required'
-        })
-    })
 
-    const { error } = schema.validate(req.body)
-    if (error) {
-        return res.status(400).json({
-            message: error.details[0].message
-        })
-    }
-    next()
-}
 
-exports.forgotPasswordValidator = (req, res, next) => {
-    const schema = Joi.object({
-        email: Joi.string().trim().email().required().messages({
-            'string.email': 'Please enter a valid email',
-            'string.empty': 'Email is required',
-            'any.required': 'Email is required'
-        })
-    })
 
-    const { error } = schema.validate(req.body)
-    if (error) {
-        return res.status(400).json({
-            message: error.details[0].message
-        })
-    }
-    next()
-}
 
-exports.resetPasswordValidator = (req, res, next) => {
-    const schema = Joi.object({
-        email: Joi.string().trim().email().required().messages({
-            'string.email': 'Please enter a valid email',
-            'string.empty': 'Email is required',
-            'any.required': 'Email is required'
-        }),
-        otp: Joi.string().trim().length(6).required().messages({
-            'string.empty': 'OTP is required',
-            'string.length': 'OTP must be 6 characters long',
-            'any.required': 'OTP is required'
-        }),
-        password: Joi.string().pattern(passwordPattern).required().messages({
-            'any.required': 'Password is required',
-            'string.empty': 'Password cannot be empty',
-            'string.pattern.base': 'Password must be at least 8 characters and include upper and lower case'
-        })
-    })
 
-    const { error } = schema.validate(req.body)
-    if (error) {
-        return res.status(400).json({
-            message: error.details[0].message
-        })
-    }
-    next()
-}
+

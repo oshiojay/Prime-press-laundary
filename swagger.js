@@ -10,6 +10,10 @@ const options = {
         },
         servers: [
         {
+            url: 'https://prime-press-laundary.onrender.com',
+            description: 'The hosted route'
+        },
+        {
             url: 'http://localhost:1110',
             description: 'Localhost'
         }
