@@ -248,17 +248,12 @@ exports.forgotPassword = async (req,res) =>{
 
 exports.resetPassword = async (req,res) => {
     try {
-        const {email, otp, password} = req.body
+        const {email, password} = req.body
         const user = await clientModel.findOne({email: email.toLowerCase()})
     
         if(!user) {
             return res.status(404).json({
                 message: "Client not found"
-            })
-        }
-        if(user.otp !== otp || Date.now() > user.otpExpire) {
-            return res.status(400).json({
-                message: "Invalid or expired OTP"
             })
         }
         if (!password) {

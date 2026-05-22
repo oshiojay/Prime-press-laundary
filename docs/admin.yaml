@@ -137,14 +137,11 @@ paths:
               type: object
               required:
                 - email
-                - otp
                 - password
               properties:
                 email:
                   type: string
                   example: johndeo@gmail.com
-                otp:
-                  type: string
                 password:
                   type: string
       responses:
