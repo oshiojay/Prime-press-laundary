@@ -15,7 +15,7 @@ exports.createAdminValidator = (req, res, next) => {
             'string.empty': 'Email is required',
             'any.required': 'Email is required'
         }),
-        password: Joi.string().pattern(passwordPattern).required().messages({
+        password: Joi.string().pattern(/^(?=.*[a-z])(?=.*[A-Z]).{8,}$/).required().messages({
             'any.required': 'Password is required',
             'string.empty': 'Password cannot be empty',
             'string.pattern.base': 'Password must be at least 8 characters and include upper and lower case'
@@ -106,7 +106,7 @@ exports.resetPasswordValidator = (req, res, next) => {
             'string.length': 'OTP must be 6 characters long',
             'any.required': 'OTP is required'
         }),
-        newPassword: Joi.string().trim().pattern(passwordPattern).required().messages({
+        password: Joi.string().pattern(passwordPattern).required().messages({
             'any.required': 'Password is required',
             'string.empty': 'Password cannot be empty',
             'string.pattern.base': 'Password must be at least 8 characters and include upper and lower case'

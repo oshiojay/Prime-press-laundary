@@ -25,20 +25,9 @@ const clientSchema = new mongoose.Schema({
     otpExpire:{
         type: Date,
          default: ()=>{
-        return Date.now() + (1000*60*7)
+        return Date.now() + (1000*60*5)
 }
-    },
-    profilePicture: {
-        secureUrl: {
-        type: String,
-        trim: true
-        },
-        publicId: {
-       type: String,
-        trim: true
-        }
-    },
-
+    }
 }, {timestamps: true})
 
 const clientModel = mongoose.model('Client', clientSchema)

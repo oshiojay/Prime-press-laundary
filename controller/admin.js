@@ -10,6 +10,7 @@ const isEmailDeliveryError = (error) => error.code === "EMAIL_DELIVERY_FAILED"
 
 
 
+
 exports.createAdmin = async (req, res) => {
     try {
         const {fullName, email, password} = req.body
@@ -29,7 +30,7 @@ exports.createAdmin = async (req, res) => {
         console.log(otp)
         await newClient.save()
         res.status(201).json({
-            message: "Client created successfully",
+            message: "Admin created successfully",
             data: newClient
         })
     } catch (error) {
@@ -76,6 +77,56 @@ exports.verifyAdmin = async (req, res) => {
         })
     }
 }
+
+exports.resendOTP = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({
+                message: 'Email is required'
+            });
+        }
+
+        const existingClient = await clientModel.findOne({ email: email.toLowerCase() });
+        if (!existingClient) {
+            return res.status(404).json({
+                message: 'User not found'
+            });
+        }
+
+        const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false, digits: true, lowerCaseAlphabets: false });
+        const otpExpire = new Date(Date.now() + 1000 * 60 * 5);
+
+        if (Date.now() > existingClient.otpExpire || otp !== existingClient.otp){
+            return res.status(400).json({
+                message: 'Invalid or expired OTP'
+            })
+        }
+
+        console.log(otp)
+        existingClient.otp = otp;
+        existingClient.otpExpire = otpExpire;
+
+        await existingClient.save();
+        await brevo(existingClient.email, existingClient.fullName, emailTemplate(existingClient.fullName, existingClient.otp))
+
+        res.status(200).json({
+            message: 'OTP sent successfully. Please check your email.'
+        });
+    } catch (error) {
+        if (isEmailDeliveryError(error)) {
+            return res.status(503).json({
+                message: "Unable to send OTP. Please try again."
+            })
+        }
+
+        console.log(error);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+};
 
 exports.loginClient = async (req, res) => {
     try {
@@ -154,14 +205,19 @@ exports.forgotPassword = async (req,res) =>{
         }
         const OTP = otpGenerator.generate(6, { upperCaseAlphabets: false, lowerCaseAlphabets: false, specialChars: false });
 
-        const expiresAt = new Date(Date.now() + 10 * 60000);
+        const expiresAt = new Date(Date.now() + 1000 * 60 * 5);
+
+        if (Date.now() > user.otpExpire || otp !== user.otp){
+            return res.status(400).json({
+                message: 'Invalid or expired OTP'
+            })
+        }
 
         const emailData = {
-            fullName: user.fullName,
+            name: user.fullName,
             otp: OTP
         }
-        console.log(OTP)
-        await brevo(user.email, user.fullName, resetPasswordTemplate(emailData.fullName, emailData.otp))
+        await brevo(user.email, user.fullName, resetPasswordTemplate(emailData))
          
         user.otp = OTP;
         user.otpExpire = expiresAt;
@@ -192,7 +248,7 @@ exports.forgotPassword = async (req,res) =>{
 
 exports.resetPassword = async (req,res) => {
     try {
-        const {email, otp, newPassword} = req.body
+        const {email, otp, password} = req.body
         const user = await clientModel.findOne({email: email.toLowerCase()})
     
         if(!user) {
@@ -205,8 +261,13 @@ exports.resetPassword = async (req,res) => {
                 message: "Invalid or expired OTP"
             })
         }
+        if (!password) {
+            return res.status(400).json({
+                message: "Password is required"
+            })
+        }
         const salt = await bcrypt.genSalt(10)
-        const hashedPassword = await bcrypt.hash(newPassword, salt)
+        const hashedPassword = await bcrypt.hash(password, salt)
         user.password = hashedPassword
         
         await user.save()

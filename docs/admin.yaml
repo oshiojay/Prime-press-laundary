@@ -1,0 +1,152 @@
+openapi: '3.0.0'
+info:
+  title: Admin API
+  version: '1.0.0'
+  description: API documentation for Admin operations in the Primepress laundry application.
+paths:
+  /api/v1/admin:
+    post:
+      summary: Create a new admin user
+      tags: [Admin]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - fullName
+                - email
+                - password
+              properties:
+                fullName:
+                  type: string
+                  example: John Doe
+                email:
+                  type: string
+                  example: johndeo@gmail.com
+                password:
+                  type: string
+      responses:
+        "201":
+          description: Admin successfully created
+
+
+
+  /api/v1/admin/verify:
+    post:
+      summary: This endpoint is to verify admin email
+      tags: [Admin]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - otp
+              properties:
+                email:
+                  type: string
+                  example: johndeo@gmail.com
+                otp:
+                  type: string
+      responses:
+        "200":
+          description: OTP verified successfully
+
+ 
+
+  /api/v1/resend-otp:
+    post:
+      summary: Resend OTP
+      tags: [Admin]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  example: johndeo@gmail.com
+      responses:
+        "200":
+          description: OTP resend successfully 
+
+
+  /api/v1/login:
+    post:
+      summary: This endpoint is for login
+      tags: [Admin]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: johndeo@gmail.com
+                password:
+                  type: string
+      responses:
+        "201":
+          description: Login successfully 
+
+
+  /api/v1/forgot-password:
+    post:
+      summary: This endpoint is for forgot password
+      tags: [Admin]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  example: johndeo@gmail.com
+      responses:
+        "200":
+          description: Forgot password sucessfully
+
+
+
+  /api/v1/reset-password:
+    post:
+      summary: This end point is to reset password
+      tags: [Admin]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - otp
+                - password
+              properties:
+                email:
+                  type: string
+                  example: johndeo@gmail.com
+                otp:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Reset password successfully 
