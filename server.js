@@ -2,14 +2,20 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const PORT = process.env.PORT
+const swaggerUi = require('swagger-ui-express')
+const swagger = require('./swagger')
 
 
 const router = require('./route/admin')
+const bookingRouter = require('./route/booking')
 
 const app = express()
 app.use(express.json())
 
+app.use('/apisDocs', swaggerUi.serve, swaggerUi.setup(swagger))
+
 app.use('/api/v1', router)
+app.use('/api/v1', bookingRouter)
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log('connected to database')

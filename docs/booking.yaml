@@ -1,0 +1,68 @@
+openapi: '3.0.0'
+info:
+  title: Booking API
+  version: '1.0.0'
+  description: API documentation for Booking operations in the Primepress laundry application.
+paths:
+  /api/v1/booking:
+    post:
+      summary: Create a new booking user
+      tags: [Booking]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - fullName
+                - phoneNumber
+                - address
+                - instruction
+                - dateAndTime
+              properties:
+                fullName:
+                  type: string
+                  example: John Doe
+                phoneNumber:
+                  type: string
+                  example: 08034308229
+                address:
+                  type: string
+                  example: 44, muyibi street
+                instruction: 
+                  type: string
+                  example: Brought 2 polo and 10 jeans
+                dateAndTime:
+                  type: string
+                  example: 30/05/2028  12:00pm
+      responses:
+        "201":
+          description: Booking successfully created
+
+
+
+  /api/v1/bookings:
+    get:
+      summary: This endpoint is to get all group
+      tags: [Booking]
+      security:
+        - bearerAuth: []
+      
+      responses: 
+        "200":
+          description: group retrieved successfully
+
+/api/v1/one-booking:
+    get:
+      summary: This endpoint is to get one group
+      parameters:
+        - in: path
+          name: id
+      tags: [Booking]
+      security:
+        - bearerAuth: []
+      
+      responses: 
+        "200":
+          description: group successfully created

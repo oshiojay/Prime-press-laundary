@@ -12,7 +12,7 @@ return `
             <div class="upper-div-1">
                 <h1>Email OTP Verification</h1>
                 <h3>Hello, ${fullName}</h3>
-                <p>Below is your one time passcode that you need to use to complete your authentication. The verification code will be valid for 60 seconds. Please do not share this code with anyone.</p>
+                <p>Below is your one time passcode that you need to use to complete your authentication. The verification code will be valid for 5 minutes. Please do not share this code with anyone.</p>
             </div>
             <div class="upper-div-2">
                 <h2> ${otp} </h2>
@@ -24,7 +24,7 @@ return `
         </div>
         <div class="downer-div">
             <p>If you would like to know more about our services, please also refer to Helpcenter</p>
-            <p>Splita Team</p>
+            <p>Primepress Laundry Team</p>
         </div>
     </div>
 </body>
@@ -38,7 +38,7 @@ exports.resetPasswordTemplate = (data)=> {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Your SPLITA Password</title>
+    <title>Reset Your Primepress Laundry Password</title>
     <style>
         /* Mobile Styles */
         @media screen and (max-width: 600px) {
@@ -59,7 +59,7 @@ exports.resetPasswordTemplate = (data)=> {
                         <!-- Brand Header -->
                         <tr>
                             <td align="center" style="padding: 30px 20px; background-color: #ffffff; border-bottom: 1px solid #eeeeee;">
-                                <h1 style="margin: 0; color: #00d2ff; font-size: 24px; font-weight: 800; letter-spacing: 1px;">SPLITA</h1>
+                                <h1 style="margin: 0; color: #00d2ff; font-size: 24px; font-weight: 800; letter-spacing: 1px;">Primepress Laundry</h1>
                             </td>
                         </tr>
 
@@ -79,7 +79,7 @@ exports.resetPasswordTemplate = (data)=> {
                                 </div>
 
                                 <p style="font-size: 14px; color: #999999; margin-top: 25px; line-height: 1.4;">
-                                    This code is valid for <strong>15 minutes</strong>. <br>
+                                    This code is valid for <strong>5 minutes</strong>. <br>
                                     If you didn't request this, please ignore this email or contact support if you're concerned about your account security.
                                 </p>
                             </td>
@@ -88,7 +88,7 @@ exports.resetPasswordTemplate = (data)=> {
                         <!-- Footer -->
                         <tr>
                             <td align="center" style="padding: 25px; background-color: #fafafa; font-size: 12px; color: #aaaaaa;">
-                                <p style="margin: 0;">&copy; 2026 SPLITA App. All rights reserved.</p>
+                                <p style="margin: 0;">&copy; 2026 Primepress Laundry. All rights reserved.</p>
                                 <p style="margin: 8px 0 0;">
                                     <a href="#" style="color: #00d2ff; text-decoration: none;">Help Center</a> • 
                                     <a href="#" style="color: #00d2ff; text-decoration: none;">Security Tips</a>
@@ -132,7 +132,7 @@ exports.resetPasswordSuccessfulTemplate = (name)=> {
                         <!-- Header -->
                         <tr>
                             <td align="center" style="padding: 30px 20px; background-color: #ffffff; border-bottom: 1px solid #eeeeee;">
-                                <h1 style="margin: 0; color: #00d2ff; font-size: 24px; font-weight: 800; letter-spacing: 1px;">SPLITA</h1>
+                                <h1 style="margin: 0; color: #00d2ff; font-size: 24px; font-weight: 800; letter-spacing: 1px;">PRIMEPRESS LAUNDRY</h1>
                             </td>
                         </tr>
 
@@ -144,12 +144,12 @@ exports.resetPasswordSuccessfulTemplate = (name)=> {
                                 
                                 <h2 style="margin: 0 0 15px; font-size: 22px; font-weight: 700; color: #1a1a1a;">Password Reset Successful</h2>
                                 <p style="font-size: 16px; line-height: 1.5; margin: 0 0 30px; color: #666666;">
-                                    Hi ${name}, your password for <strong>SPLITA</strong> has been successfully updated. You can now log back into your account using your new credentials.
+                                    Hi ${name}, your password for <strong>PRIMEPRESS LAUNDRY</strong> has been successfully updated. You can now log back into your account using your new credentials.
                                 </p>
                                 
                                 <!-- CTA Button -->
-                                <a href="https://splita.app" class="cta-button" style="display: inline-block; background-color: #00d2ff; color: #ffffff; padding: 16px 35px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
-                                    Log In to SPLITA
+                                <a href="https://primepresslaundry.com" class="cta-button" style="display: inline-block; background-color: #00d2ff; color: #ffffff; padding: 16px 35px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
+                                    Log in to PRIMEPRESS LAUNDRY
                                 </a>
 
                                 <!-- Security Warning -->
@@ -162,7 +162,7 @@ exports.resetPasswordSuccessfulTemplate = (name)=> {
                         <!-- Footer -->
                         <tr>
                             <td align="center" style="padding: 25px; background-color: #fafafa; font-size: 12px; color: #aaaaaa;">
-                                <p style="margin: 0;">&copy; 2026 SPLITA App. All rights reserved.</p>
+                                <p style="margin: 0;">&copy; 2026 PRIMEPRESS LAUNDRY App. All rights reserved.</p>
                                 <p style="margin: 8px 0 0;">
                                     <a href="#" style="color: #00d2ff; text-decoration: none;">Security Settings</a> • 
                                     <a href="#" style="color: #00d2ff; text-decoration: none;">Contact Support</a>
