@@ -1,35 +1,145 @@
-exports.emailTemplate = (fullName, otp)=>{
-return `
+exports.emailTemplate = (name, otp) => {
+  return `
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>your otp?</title>
-<body>
-    <div class="main-section">
-        <div class="upper-div">
-            <div class="upper-div-1">
-                <h1>Email OTP Verification</h1>
-                <h3>Hello, ${fullName}</h3>
-                <p>Below is your one time passcode that you need to use to complete your authentication. The verification code will be valid for 5 minutes. Please do not share this code with anyone.</p>
-            </div>
-            <div class="upper-div-2">
-                <h2> ${otp} </h2>
-            </div>
-            <div class="upper-div-3">
-                <p>If you are having any issues with your account, please don't hesitate to contact us.</p>
-                <p>Enjoy the fastest & most secure way to buy Airtime, Mobile Data & to pay Bills.</p>
-            </div>
-        </div>
-        <div class="downer-div">
-            <p>If you would like to know more about our services, please also refer to Helpcenter</p>
-            <p>Primepress Laundry Team</p>
-        </div>
-    </div>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OTP Verification</title>
+</head>
+
+<body style="margin:0; padding:0; background-color:#f4f7f6; font-family:Arial, Helvetica, sans-serif;">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f4f7f6">
+<tr>
+<td align="center" style="padding:40px 15px;">
+
+<table width="500" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff"
+style="max-width:500px; border-radius:12px; overflow:hidden;">
+
+    <!-- Header -->
+    <tr>
+        <td align="center"
+        style="padding:30px 20px; border-bottom:1px solid #eeeeee;">
+
+            <h1 style="
+                margin:0;
+                color:#00d2ff;
+                font-size:28px;
+                font-weight:bold;
+                letter-spacing:1px;
+            ">
+                PRIMEPRESS LAUNDRY
+            </h1>
+
+        </td>
+    </tr>
+
+    <!-- Body -->
+    <tr>
+        <td style="padding:40px 30px; text-align:center;">
+
+            <h2 style="
+                margin:0 0 20px;
+                color:#1a1a1a;
+                font-size:24px;
+            ">
+                Email OTP Verification
+            </h2>
+
+            <p style="
+                margin:0 0 20px;
+                color:#666666;
+                font-size:16px;
+                line-height:26px;
+            ">
+                Hello <strong>${name}</strong>,
+            </p>
+
+            <p style="
+                margin:0 0 30px;
+                color:#666666;
+                font-size:15px;
+                line-height:26px;
+            ">
+                Below is your one-time passcode needed to complete your authentication.
+                Please do not share this code with anyone.
+            </p>
+
+            <!-- OTP -->
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td align="center">
+
+                        <div style="
+                            background:#f8fafc;
+                            border:2px dashed #00d2ff;
+                            border-radius:10px;
+                            padding:20px;
+                            display:inline-block;
+                            min-width:220px;
+                        ">
+                            <span style="
+                                font-size:38px;
+                                font-weight:bold;
+                                letter-spacing:10px;
+                                color:#111111;
+                                font-family:Courier New, monospace;
+                            ">
+                                ${otp}
+                            </span>
+                        </div>
+
+                    </td>
+                </tr>
+            </table>
+
+            <p style="
+                margin-top:30px;
+                color:#999999;
+                font-size:14px;
+                line-height:24px;
+            ">
+                This OTP is valid for <strong>60 seconds</strong>.<br>
+                If you did not request this code, please ignore this email.
+            </p>
+
+        </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+        <td align="center"
+        style="
+            padding:25px;
+            background:#fafafa;
+            color:#aaaaaa;
+            font-size:12px;
+            line-height:22px;
+        ">
+
+            <p style="margin:0;">
+                If you are having issues with your account,
+                please contact support.
+            </p>
+
+            <p style="margin:10px 0 0;">
+                PRIMEPRESS Team
+            </p>
+
+        </td>
+    </tr>
+
+</table>
+
+</td>
+</tr>
+</table>
+
 </body>
-</html>`
-}
+</html>
+`;
+};
 
 exports.resetPasswordTemplate = (data)=> {
     return `

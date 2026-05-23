@@ -81,7 +81,7 @@ exports.verifyAdmin = async (req, res) => {
 exports.resendOTP = async (req, res) => {
     try {
         const { email } = req.body;
-
+        console.log(email)
         if (!email) {
             return res.status(400).json({
                 message: 'Email is required'
@@ -95,38 +95,101 @@ exports.resendOTP = async (req, res) => {
             });
         }
 
+        // Generate new OTP
         const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false, digits: true, lowerCaseAlphabets: false });
-        const otpExpire = new Date(Date.now() + 1000 * 60 * 5);
+        const otpExpire = new Date(Date.now() + 1000 * 60 * 7);
 
-        if (Date.now() > existingClient.otpExpire || otp !== existingClient.otp){
-            return res.status(400).json({
-                message: 'Invalid or expired OTP'
-            })
-        }
 
         console.log(otp)
+        // Update client with new OTP
         existingClient.otp = otp;
         existingClient.otpExpire = otpExpire;
-
         await existingClient.save();
-        await brevo(existingClient.email, existingClient.fullName, emailTemplate(existingClient.fullName, existingClient.otp))
 
+        
+        await brevo(existingClient.email, existingClient.fullName, emailTemplate(existingClient.fullName, existingClient.otp))
         res.status(200).json({
             message: 'OTP sent successfully. Please check your email.'
         });
     } catch (error) {
-        if (isEmailDeliveryError(error)) {
-            return res.status(503).json({
-                message: "Unable to send OTP. Please try again."
-            })
-        }
-
         console.log(error);
         res.status(500).json({
             message: error.message
         });
     }
 };
+
+// Login client
+exports.login = async (req, res) => {
+    try {
+
+        const {email, password} = req.body;
+        if (!email || !password) {
+            return res.status(400).json({
+                message: 'Email and password are required'
+            })
+        }
+
+        const user = await clientModel.findOne({ email: email.toLowerCase() })
+        if (!user){
+            return res.status(404).json({
+                message: 'Invalid Credentials'
+            })
+        }
+        
+        if (user.isLocked) {
+            return res.status(423).json({
+                message: 'Account locked'
+            })
+        }
+
+        const correctPassword = await bcrypt.compare(password, user.password)
+
+        if (!correctPassword) {
+            user.failedLoginAttempts = (user.failedLoginAttempts || 0) + 1
+            if (user.failedLoginAttempts >= 5){
+                user.isLocked = true
+                await user.save()
+                return res.status(429).json({
+                    message: 'Account locked'
+                })
+            }
+
+            await user.save()
+
+            return res.status(400).json({
+                message: 'Invalid Credentials',
+                attemptsRemaining: 5 - user.failedLoginAttempts
+            })
+        }
+        if (user.isVerified == false) {
+            return res.status(400).json({
+                message: 'Please verify your email'
+            })
+        };
+
+        user.failedLoginAttempts = 0
+        await user.save()
+
+        const token = jwt.sign(
+            {id: user.id, role: user.role},
+            process.env.SECERT_KEY,
+            {expiresIn: '1d'}
+        );
+
+        res.status(200).json({
+            message: 'Login successfull',
+            token,
+            user
+        })
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({
+            message: `Something went wrong`
+        })
+    }
+}
+
 
 exports.loginClient = async (req, res) => {
     try {
@@ -207,22 +270,16 @@ exports.forgotPassword = async (req,res) =>{
 
         const expiresAt = new Date(Date.now() + 1000 * 60 * 5);
 
-        if (Date.now() > user.otpExpire || otp !== user.otp){
-            return res.status(400).json({
-                message: 'Invalid or expired OTP'
-            })
-        }
-
         const emailData = {
             name: user.fullName,
             otp: OTP
         }
-        await brevo(user.email, user.fullName, resetPasswordTemplate(emailData))
          
         user.otp = OTP;
         user.otpExpire = expiresAt;
 
         await user.save();
+        await brevo(user.email, user.fullName, resetPasswordTemplate(emailData))
 
         res.status(200).json({
             message: 'Please check your email for password OTP'
@@ -248,7 +305,7 @@ exports.forgotPassword = async (req,res) =>{
 
 exports.resetPassword = async (req,res) => {
     try {
-        const {email, password} = req.body
+        const { email, password } = req.body
         const user = await clientModel.findOne({email: email.toLowerCase()})
     
         if(!user) {
@@ -256,6 +313,7 @@ exports.resetPassword = async (req,res) => {
                 message: "Client not found"
             })
         }
+        
         if (!password) {
             return res.status(400).json({
                 message: "Password is required"
