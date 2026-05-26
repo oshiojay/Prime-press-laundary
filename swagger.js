@@ -1,4 +1,4 @@
-const swagger = require('swagger-jsdoc')
+const swagger = require('swagger-jsdoc');
 
 const options = {
     definition: {
@@ -9,17 +9,17 @@ const options = {
             description: 'API documentation for Primepress Laundry'
         },
         servers: [
-        {
-            url: 'https://prime-press-laundary.onrender.com',
-            description: 'The hosted route'
-        },
-        {
-            url: 'http://localhost:1110',
-            description: 'Localhost'
-        }
+            {
+                url: 'https://prime-press-laundary.onrender.com',
+                description: 'The hosted route'
+            },
+            {
+                url: 'http://localhost:1110',
+                description: 'Localhost'
+            }
         ],
         components: {
-            securitySchemas: {
+            securitySchemes: { // Corrected from securitySchemas to securitySchemes
                 bearerAuth: {
                     type: 'http',
                     scheme: 'bearer',
@@ -29,8 +29,9 @@ const options = {
         }
     },
     apis: [
-        "./docs/admin.yaml", "./docs/booking.yaml"
+        "./docs/admin.yaml",
+        "./docs/booking.yaml"
     ]
-}
+};
 
-module.exports = swagger(options)
+module.exports = swagger(options);
