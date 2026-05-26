@@ -10,6 +10,12 @@ const brevo = async (userEmail, username, html) => {
         throw error
     }
 
+    if (typeof html !== "string" || !html.trim()) {
+        const error = new Error("Email template must return HTML content")
+        error.code = "EMAIL_DELIVERY_FAILED"
+        throw error
+    }
+
     const sendSmtpEmail = new BrevoClient.SendSmtpEmail()
     const data = {
         htmlContent: `<html><head></head><body><p>Hello ${username} ,</p>Welcome to backend!.</p></body></html>`,

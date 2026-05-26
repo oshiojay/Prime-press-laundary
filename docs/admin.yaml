@@ -56,8 +56,6 @@ paths:
         "200":
           description: OTP verified successfully
 
- 
-
   /api/v1/resend-otp:
     post:
       summary: Resend OTP
@@ -123,8 +121,6 @@ paths:
         "200":
           description: Forgot password sucessfully
 
-
-
   /api/v1/reset-password:
     post:
       summary: This end point is to reset password
@@ -137,11 +133,15 @@ paths:
               type: object
               required:
                 - email
+                - otp
                 - password
               properties:
                 email:
                   type: string
                   example: johndeo@gmail.com
+                otp:
+                  type: string
+                  example: "123456"
                 password:
                   type: string
       responses:
