@@ -1,8 +1,3 @@
-openapi: '3.0.0'
-info:
-  title: Booking API
-  version: '1.0.0'
-  description: API documentation for Booking operations in the Primepress laundry application.
 paths:
   /api/v1/booking:
     post:
@@ -53,12 +48,15 @@ paths:
         "200":
           description: group retrieved successfully
 
-/api/v1/one-booking:
+  /api/v1/one-booking/{id}:
     get:
       summary: This endpoint is to get one group
       parameters:
         - in: path
           name: id
+          required: true
+          schema:
+            type: string
       tags: [Booking]
       security:
         - bearerAuth: []

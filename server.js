@@ -14,6 +14,10 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
+app.get('/apisDocs.json', (req, res) => {
+    res.json(swagger)
+})
+
 app.use('/apisDocs', swaggerUi.serve, swaggerUi.setup(swagger))
 
 app.use('/api/v1', router)
