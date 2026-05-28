@@ -30,10 +30,7 @@ exports.createBookingValidator = (req, res, next) => {
             'any.required': 'Instruction is required'
         }),
 
-        dateAndTime: Joi.date().required().messages({
-            'date.base': 'Date and time must be valid',
-            'any.required': 'Date and time is required'
-        })
+       
     })
 
     const { error } = schema.validate(req.body)
